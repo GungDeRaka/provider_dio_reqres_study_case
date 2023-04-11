@@ -12,7 +12,8 @@ class UserModel extends Equatable {
     required this.avatar,
   });
 
-  factory UserModel.fromJson(String source) => UserModel.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory UserModel.fromJson(String source) =>
+      UserModel.fromMap(json.decode(source) as Map<String, dynamic>);
 
   factory UserModel.fromMap(Map<String, dynamic> map) {
     return UserModel(
@@ -24,11 +25,11 @@ class UserModel extends Equatable {
     );
   }
 
-final String avatar;
-final String email;
-final String firstName;
-final int id;
-final String lastName;
+  final String avatar;
+  final String email;
+  final String firstName;
+  final int id;
+  final String lastName;
 
   @override
   List<Object> get props {
@@ -72,6 +73,3 @@ final String lastName;
     );
   }
 }
-
-
-            

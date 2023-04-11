@@ -5,8 +5,8 @@ import 'package:equatable/equatable.dart';
 
 class SupportModel extends Equatable {
   const SupportModel(
-    this.url,
     this.text,
+    this.url,
   );
 
   factory SupportModel.fromJson(String source) =>
@@ -14,8 +14,8 @@ class SupportModel extends Equatable {
 
   factory SupportModel.fromMap(Map<String, dynamic> map) {
     return SupportModel(
-      map['url'] as String,
       map['text'] as String,
+      map['url'] as String,
     );
   }
 
@@ -23,25 +23,25 @@ class SupportModel extends Equatable {
   final String url;
 
   @override
-  List<Object> get props => [url, text];
+  List<Object> get props => [text, url];
 
   @override
   bool get stringify => true;
 
   SupportModel copyWith({
-    String? url,
     String? text,
+    String? url,
   }) {
     return SupportModel(
-      url ?? this.url,
       text ?? this.text,
+      url ?? this.url,
     );
   }
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'url': url,
       'text': text,
+      'url': url,
     };
   }
 
