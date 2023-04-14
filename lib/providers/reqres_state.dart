@@ -14,7 +14,7 @@ class ReqresState extends Equatable {
     required this.users,
   });
 
-  factory ReqresState.initial() =>const ReqresState(
+  factory ReqresState.initial() => const ReqresState(
       status: ReqresStatus.initial, errorMessage: CustomError(), users: []);
 
   final CustomError errorMessage;

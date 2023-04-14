@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter_provider_studycase_reqres/providers/reqres_provider.dart';
+import 'package:flutter_provider_studycase_reqres/repositories/reqres_repository.dart';
+import 'package:flutter_provider_studycase_reqres/services/api_services.dart';
+import 'package:provider/provider.dart';
 
 import 'pages/home_page.dart';
 
@@ -17,9 +20,29 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MultiProvider(providers: [
+//! menggunakan provider dengan cara ini tidak efsien,karena class" saling berketergantungan
+        /*ChangeNotifierProvider(
+          create: (_) => ReqresProvider(
+            repository: ReqresRepository(
+              service: APIService(),
+            ),
+          ),
+        ),*/
+//? kita dapat menggunakan provider as dependency injection agar menghilangkan "ketergantungan" tersebut
+        Provider<APIService>(
+          create: (context) => APIService(),
+        ),
+        Provider<ReqresRepository>(
+          create: (context) => ReqresRepository(
+            service: context.read<APIService>(),
+          ),
+        ),
+        ChangeNotifierProvider(
+          create: (context) =>
+              ReqresProvider(repository: context.read<ReqresRepository>()),
+        )
+      ], child: const MyHomePage()),
     );
   }
 }
-
-

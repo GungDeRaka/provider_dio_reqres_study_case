@@ -1,50 +1,69 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_provider_studycase_reqres/providers/reqres_provider.dart';
+import 'package:flutter_provider_studycase_reqres/repositories/reqres_repository.dart';
+import 'package:flutter_provider_studycase_reqres/services/api_services.dart';
+import 'package:provider/provider.dart';
 
-import '../services/api_services.dart';
+import '../providers/reqres_state.dart';
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
+  const MyHomePage({
+    super.key,
+  });
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
+  late final ReqresProvider reqresProvider;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    reqresProvider = context.read<ReqresProvider>();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      reqresProvider.getUserData();
     });
+  }
+
+  Widget dataDisplayer() {
+    var state = context.watch<ReqresProvider>().state;
+    Widget myWidget = Container();
+    // print(context.read<APIService>().getAllUsers());
+    // print(context.read<ReqresRepository>().getUsersReqres());
+    // print(context.read<ReqresProvider>().getUserData());
+    // ! checking connection status with switch case more easily
+    switch (state.status) {
+      case ReqresStatus.initial:
+        myWidget = Container();
+        break;
+      case ReqresStatus.loading:
+        myWidget = const Center(child: CircularProgressIndicator());
+        break;
+      case ReqresStatus.error:
+        myWidget = Center(
+          child: Text("Error ${state.errorMessage}"),
+        );
+        break;
+      case ReqresStatus.loaded:
+        myWidget = ListView.builder(
+          itemCount: state.users.length,
+          itemBuilder: (context, index) {
+          return ListTile(title: Text(state.users[index].email),);
+        },);
+        break;
+    }
+    return myWidget;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
+        appBar: AppBar(
+          title: Text("Reqres Study Case"),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        
-        child: const Icon(Icons.add),
-      ),
-    );
+        body: dataDisplayer());
   }
 }

@@ -15,6 +15,7 @@ class APIService {
       var response = await Dio().getUri(uri);
       if(response.statusCode == 200){
         var result = response.data;
+        print(ResponseModel.fromMap(result));
         return ResponseModel.fromMap(result);
       }
       return null;

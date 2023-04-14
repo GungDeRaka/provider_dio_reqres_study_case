@@ -5,11 +5,11 @@ import 'package:equatable/equatable.dart';
 
 class UserModel extends Equatable {
   const UserModel({
-    required this.id,
+    required this.avatar,
     required this.email,
     required this.firstName,
+    required this.id,
     required this.lastName,
-    required this.avatar,
   });
 
   factory UserModel.fromJson(String source) =>
@@ -17,11 +17,11 @@ class UserModel extends Equatable {
 
   factory UserModel.fromMap(Map<String, dynamic> map) {
     return UserModel(
-      id: map['id'] as int,
-      email: map['email'] as String,
-      firstName: map['firstName'] as String,
-      lastName: map['lastName'] as String,
       avatar: map['avatar'] as String,
+      email: map['email'] as String,
+      firstName: map['first_name'] as String,
+      id: map['id'] as int,
+      lastName: map['last_name'] as String,
     );
   }
 
@@ -34,11 +34,11 @@ class UserModel extends Equatable {
   @override
   List<Object> get props {
     return [
-      id,
+      avatar,
       email,
       firstName,
+      id,
       lastName,
-      avatar,
     ];
   }
 
@@ -47,29 +47,29 @@ class UserModel extends Equatable {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'id': id,
+      'avatar': avatar,
       'email': email,
       'firstName': firstName,
+      'id': id,
       'lastName': lastName,
-      'avatar': avatar,
     };
   }
 
   String toJson() => json.encode(toMap());
 
   UserModel copyWith({
-    int? id,
+    String? avatar,
     String? email,
     String? firstName,
+    int? id,
     String? lastName,
-    String? avatar,
   }) {
     return UserModel(
-      id: id ?? this.id,
+      avatar: avatar ?? this.avatar,
       email: email ?? this.email,
       firstName: firstName ?? this.firstName,
+      id: id ?? this.id,
       lastName: lastName ?? this.lastName,
-      avatar: avatar ?? this.avatar,
     );
   }
 }

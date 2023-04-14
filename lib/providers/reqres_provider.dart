@@ -20,7 +20,9 @@ Future<void> getUserData()async {
 
   try {
     final users = await repository.getUsersReqres();
-    _state = _state.copyWith(status: ReqresStatus.loaded,users: users );
+    _state = _state.copyWith(status: ReqresStatus.loaded,users:users );
+    print("state provider $_state");
+    notifyListeners();
   }on CustomError catch (e) {
     _state = _state.copyWith(status: ReqresStatus.error,errorMessage: e);
     notifyListeners();

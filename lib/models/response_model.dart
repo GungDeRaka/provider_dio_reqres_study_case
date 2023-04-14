@@ -26,8 +26,8 @@ class ResponseModel extends Equatable {
       map['total'] as int,
       map['total_pages'] as int,
       List<UserModel>.from(
-        (map['data'] as List<int>).map<UserModel>(
-          (x) => UserModel.fromMap(x as Map<String, dynamic>),
+        map['data']?.map<UserModel>(
+          (x) => UserModel.fromMap(x),
         ),
       ),
       SupportModel.fromMap(map['support'] as Map<String, dynamic>),
