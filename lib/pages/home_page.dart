@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_provider_studycase_reqres/common_widgets/user_card.dart';
+import 'package:flutter_provider_studycase_reqres/pages/detail_page.dart';
 import 'package:flutter_provider_studycase_reqres/providers/reqres_provider.dart';
 import 'package:flutter_provider_studycase_reqres/repositories/reqres_repository.dart';
 import 'package:flutter_provider_studycase_reqres/services/api_services.dart';
@@ -31,10 +33,6 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget dataDisplayer() {
     var state = context.watch<ReqresProvider>().state;
     Widget myWidget = Container();
-    // print(context.read<APIService>().getAllUsers());
-    // print(context.read<ReqresRepository>().getUsersReqres());
-    // print(context.read<ReqresProvider>().getUserData());
-    // ! checking connection status with switch case more easily
     switch (state.status) {
       case ReqresStatus.initial:
         myWidget = Container();
@@ -48,11 +46,23 @@ class _MyHomePageState extends State<MyHomePage> {
         );
         break;
       case ReqresStatus.loaded:
-        myWidget = ListView.builder(
+        myWidget = GridView.builder(
           itemCount: state.users.length,
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2, mainAxisSpacing: 10.0, crossAxisSpacing: 10.0),
           itemBuilder: (context, index) {
-          return ListTile(title: Text(state.users[index].email),);
-        },);
+            var user = state.users[index];
+            return InkWell(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DetailPage(user: user),
+                      ));
+                },
+                child: UserCard(user: user));
+          },
+        );
         break;
     }
     return myWidget;
@@ -62,7 +72,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Reqres Study Case"),
+          title: const Text("Reqres Study Case"),
         ),
         body: dataDisplayer());
   }
